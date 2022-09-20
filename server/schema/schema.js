@@ -3,12 +3,26 @@ var _ = require('lodash')
 
 //Dummy Data
 var usersData = [
-    { id: '1', name: 'Thompson', age: 42 },
-    { id: '13', name: 'Alvarez', age: 38 },
-    { id: '311', name: 'Errup', age: 27 },
-    { id: '19', name: 'Runner', age: 25 },
-    { id: '150', name: 'Williams', age: 58 },
+    { id: '1', name: 'Thompson', age: 42, profession: 'PhD Journalism' },
+    { id: '13', name: 'Alvarez', age: 38, profession: 'Chef' },
+    { id: '311', name: 'Errup', age: 27, profession: 'Influencer' },
+    { id: '19', name: 'Runner', age: 25, profession: 'Entrepreneur' },
+    { id: '150', name: 'Williams', age: 58, profession: 'Professor' },
 ];
+
+var hobbiesData = [
+    { id: '1', title: 'Musician', description: 'Writer, composer and songwriter' },
+    { id: '2', title: 'Biking Enthusiast', description: 'Mountain biking / Off-road trail riding' },
+    { id: '3', title: 'Mechanic', description: 'Motorcycle maintenance' },
+    { id: '4', title: 'Gardening', description: 'Growing and maintaining a garden for leisure and sustenance' },
+    { id: '5', title: 'Programming', description: 'Improving life through computers' }
+];
+
+var postsData = [
+    { id: '1', comment: 'Sourcing Key Components', },
+    { id: '2', comment: 'Top MTB Trails in Tennessee', },
+    { id: '3', comment: '10 Seed Banks You Should Be Buying From' },
+]
 
 
 
@@ -32,9 +46,30 @@ const UserType = new GraphQLObjectType({
     name: 'User',
     description: 'Documentation for user...',
     fields: () => ({
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
         name: { type: GraphQLString },
-        age: { type: GraphQLInt }
+        age: { type: GraphQLInt },
+        profession: { type: GraphQLString }
+    })
+});
+
+const HobbyType = new GraphQLObjectType({
+    name: 'Hobby',
+    description: 'Hobby Description',
+    fields: () => ({
+        id: { type: GraphQLID },
+        title: { type: GraphQLString },
+        description: { type: GraphQLString },
+    })
+});
+
+//Post type (id, comment)
+const PostType = new GraphQLObjectType({
+    name: 'Post',
+    description: 'Post Description',
+    fields: () => ({
+        id: { type: GraphQLID },
+        comment: { type: GraphQLString },
     })
 });
 
@@ -48,12 +83,35 @@ const RootQuery = new GraphQLObjectType({
             args: { id: { type: GraphQLString } },
 
             resolve(parent, args) {
-                return _.find(usersData, { id: args.id })
+                //                return _.find(usersData, { id: args.id })
 
                 //we resolve with data
                 //get and return data from a data source
             }
-        }
+        },
+
+        hobby: {
+            type: HobbyType,
+            args: { id: { type: GraphQLID } },
+
+            resolve(parent, args) {
+                //return data for our hobby
+                return _.find(hobbiesData, { id: args.id })
+            }
+        },
+
+        post: {
+            type: PostType,
+            args: { id: { type: GraphQLID } },
+
+            resolve(parent, args) {
+                //return data 
+                return _.find(postsData, { id: args.id })
+            }
+        },
+
+
+
     }
 });
 /*
