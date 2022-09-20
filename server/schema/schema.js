@@ -19,9 +19,10 @@ var hobbiesData = [
 ];
 
 var postsData = [
-    { id: '1', comment: 'Sourcing Key Components', },
-    { id: '2', comment: 'Top MTB Trails in Tennessee', },
-    { id: '3', comment: '10 Seed Banks You Should Be Buying From' },
+    { id: '1', comment: 'Sourcing Key Components', userId: '1' },
+    { id: '2', comment: 'Top MTB Trails in Tennessee', userId: '150' },
+    { id: '3', comment: '10 Seed Banks You Should Be Buying From', userId: '19' },
+    { id: '4', comment: 'Programming Interview Preparation', userId: '311' },
 ]
 
 
@@ -38,8 +39,6 @@ const {
     GraphQLSchema
 
 } = graphql
-
-
 
 //Create types
 const UserType = new GraphQLObjectType({
@@ -70,6 +69,12 @@ const PostType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         comment: { type: GraphQLString },
+        user: {
+            type: UserType,
+            resolve(parent, args) {
+                return _.find(usersData, { id: parent.userId })
+            }
+        }
     })
 });
 
@@ -83,7 +88,6 @@ const RootQuery = new GraphQLObjectType({
             args: { id: { type: GraphQLString } },
 
             resolve(parent, args) {
-                //                return _.find(usersData, { id: args.id })
 
                 //we resolve with data
                 //get and return data from a data source
@@ -109,6 +113,8 @@ const RootQuery = new GraphQLObjectType({
                 return _.find(postsData, { id: args.id })
             }
         },
+
+
 
 
 
