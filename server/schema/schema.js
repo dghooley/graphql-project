@@ -11,11 +11,11 @@ var usersData = [
 ];
 
 var hobbiesData = [
-    { id: '1', title: 'Musician', description: 'Writer, composer and songwriter' },
-    { id: '2', title: 'Biking Enthusiast', description: 'Mountain biking / Off-road trail riding' },
-    { id: '3', title: 'Mechanic', description: 'Motorcycle maintenance' },
-    { id: '4', title: 'Gardening', description: 'Growing and maintaining a garden for leisure and sustenance' },
-    { id: '5', title: 'Programming', description: 'Improving life through computers' }
+    { id: '1', title: 'Musician', description: 'Writer, composer and songwriter', userId: '19' },
+    { id: '2', title: 'Biking Enthusiast', description: 'Mountain biking / Off-road trail riding', userId: '311' },
+    { id: '3', title: 'Mechanic', description: 'Motorcycle maintenance', userId: '1' },
+    { id: '4', title: 'Gardening', description: 'Growing and maintaining a garden for leisure and sustenance', userId: '150' },
+    { id: '5', title: 'Programming', description: 'Improving life through computers', userId: '19' }
 ];
 
 var postsData = [
@@ -23,6 +23,7 @@ var postsData = [
     { id: '2', comment: 'Top MTB Trails in Tennessee', userId: '150' },
     { id: '3', comment: '10 Seed Banks You Should Be Buying From', userId: '19' },
     { id: '4', comment: 'Programming Interview Preparation', userId: '311' },
+    { id: '5', comment: 'Meeting People is Easy', userId: '1' },
 ]
 
 
@@ -59,6 +60,12 @@ const HobbyType = new GraphQLObjectType({
         id: { type: GraphQLID },
         title: { type: GraphQLString },
         description: { type: GraphQLString },
+        user: {
+            type: UserType,
+            resolve(parent, args) {
+                return _.find(usersData, { id: parent.userId })
+            }
+        }
     })
 });
 
