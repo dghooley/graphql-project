@@ -23,6 +23,7 @@ var postsData = [
     { id: '2', comment: 'Top MTB Trails in Tennessee', userId: '150' },
     { id: '3', comment: '10 Seed Banks You Should Be Buying From', userId: '19' },
     { id: '4', comment: 'Programming Interview Preparation', userId: '311' },
+    { id: '5', comment: 'The Tastes of Aubrac: Book Review', userId: '13' },
 ]
 
 
@@ -36,7 +37,8 @@ const {
     GraphQLID,
     GraphQLString,
     GraphQLInt,
-    GraphQLSchema
+    GraphQLSchema,
+    GraphQLList,
 
 } = graphql
 
@@ -48,7 +50,21 @@ const UserType = new GraphQLObjectType({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         age: { type: GraphQLInt },
-        profession: { type: GraphQLString }
+        profession: { type: GraphQLString },
+
+        posts: {
+            type: new graphql.GraphQLList(PostType),
+            resolve(parent, args) {
+                return _.filter(postsData, { userId: parent.id })
+            }
+        },
+
+        hobbies: {
+            type: new graphql.GraphQLList(HobbyType),
+            resolve(parent, args) {
+                return _.filter(hobbiesData, { userId: parent.id })
+            }
+        }
     })
 });
 
@@ -99,6 +115,8 @@ const RootQuery = new GraphQLObjectType({
 
                 //we resolve with data
                 //get and return data from a data source
+
+                return _.find(usersData, { id: args.id })
             }
         },
 
@@ -117,7 +135,7 @@ const RootQuery = new GraphQLObjectType({
             args: { id: { type: GraphQLID } },
 
             resolve(parent, args) {
-                //return data 
+                //return data (post data)
                 return _.find(postsData, { id: args.id })
             }
         },
