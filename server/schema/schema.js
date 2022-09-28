@@ -141,20 +141,72 @@ const RootQuery = new GraphQLObjectType({
         },
 
 
-
-
-
     }
 });
-/*
-{
-    user(id: "1") {
-        name
 
-*/
+//Mutations
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        CreateUser: {
+            type: UserType,
+            args: {
+                //  id: {type: GraphQLID}
+                name: { type: GraphQLString },
+                age: { type: GraphQLInt },
+                profession: { type: GraphQLString },
+            },
+            resolve(parent, args) {
+                let user = {
+                    name: args.name,
+                    age: args.age,
+                    profession: args.profession,
+                }
+                return user;
+            }
+        },
+        //todo: CreatePost mutation
+        CreatePost: {
+            type: PostType,
+            args: {
+                //    id: { type: GraphQLID },
+                comment: { type: GraphQLString },
+                userId: { type: GraphQLID },
+            },
+
+            resolve(parent, args) {
+                let post = {
+                    comment: args.comment,
+                    userId: args.userId,
+                }
+                return post;
+            }
+        },
+        //todo: CreateHobby mutation
+        CreateHobby: {
+            type: HobbyType,
+            args: {
+                //  id: { type: GraphQLID },
+                title: { type: GraphQLString },
+                description: { type: GraphQLString },
+                userID: { type: GraphQLID },
+            },
+
+            resolve(parent, args) {
+                let hobby = {
+                    title: args.title,
+                    description: args.description,
+                    userId: args.userID,
+                }
+                return hobby;
+            }
+        }
+    }
+})
 
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation,
 })
 
 
