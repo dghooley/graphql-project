@@ -1,5 +1,4 @@
 const graphql = require('graphql');
-
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -8,7 +7,6 @@ const {
     GraphQLBoolean,
     GraphQLFloat,
     GraphQLNonNull,
-
 
 } = graphql
 
@@ -41,8 +39,6 @@ const Person = new GraphQLObjectType({
     })
 })
 
-
-
 //RootQuery
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -54,23 +50,18 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 //we resolve with data
                 //get and return data from a data source
-
                 let personObj = {
                     //id: {type: GraphQLID},
-                    name: "Pat",
-                    age: 26,
+                    name: "Sam",
+                    age: 35,
                     isMarried: true,
                     gpa: 4.0,
-
                 };
+                return personObj;
             }
         }
-
-
-
     }
 });
-
 
 module.exports = new graphql.GraphQLSchema({
     query: RootQuery
